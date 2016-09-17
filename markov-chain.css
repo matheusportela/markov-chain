@@ -1,0 +1,12 @@
+.edge {
+    stroke: #bdc3c7;
+    stroke-opacity: 0.6;
+    stroke-width: 2px;
+    fill: transparent;
+}
+
+.node {
+    stroke: #fff;
+    stroke-width: 1.5px;
+    fill: #2980b9;
+}
