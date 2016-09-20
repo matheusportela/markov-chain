@@ -5,8 +5,10 @@ $(function() {
             {id: 'B', x: 200, y: 100}
         ],
         edges: [
-            {source: 0, target: 1},
-            {source: 1, target: 0}
+            {source: 0, target: 0, probability: 0.3},
+            {source: 0, target: 1, probability: 0.7},
+            {source: 1, target: 0, probability: 0.7},
+            {source: 1, target: 1, probability: 0.3}
         ]
     }
 
@@ -65,12 +67,15 @@ $(function() {
     }
 
     function drawBezierCurve(x, y) {
-        return drawQuadraticCurve(x, y, x, y);
+        // Creating Bézier curve with fixed size and orientation
+        var d = 50;
+        return ('M' + x + ' ' + y +
+                ' C ' + (x + d) + ' ' + (y + d) +
+                ', ' + (x - d) + ' ' + (y + d) +
+                ', ' + x + ' ' + y);
     }
 
     function drag(d) {
-        console.log('Drag event');
-
         d.x = d3.event.x;
         d.y = d3.event.y;
 
