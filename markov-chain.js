@@ -1,14 +1,45 @@
 $(function() {
+    class MarkovChain {
+        constructor(transitionMatrix) {
+            this.transitionMatrix = transitionMatrix;
+            this.state = 0;
+        }
+
+        transition() {
+            var sampledProb = Math.random();
+            var nextState = 0;
+            var requiredProb;
+
+            console.log('Sample prob:', sampledProb);
+
+            for (var i = 0; i < this.transitionMatrix.length; i++) {
+                requiredProb = this.transitionMatrix[this.state][i];
+                nextState = i;
+
+                console.log('Required prob:', requiredProb);
+
+                if (sampledProb < requiredProb) {
+                    break;
+                } else {
+                    sampledProb -= requiredProb;
+                }
+            }
+
+            console.log('Next state:', nextState);
+            this.state = nextState;
+        }
+    }
+
     var data = {
         nodes: [
             {id: 'A', x: 100, y: 100},
             {id: 'B', x: 200, y: 100}
         ],
         edges: [
-            {source: 0, target: 0, probability: 0.3},
-            {source: 0, target: 1, probability: 0.7},
-            {source: 1, target: 0, probability: 0.7},
-            {source: 1, target: 1, probability: 0.3}
+            {source: 0, target: 0, probability: 0.5},
+            {source: 0, target: 1, probability: 0.5},
+            {source: 1, target: 0, probability: 0.9},
+            {source: 1, target: 1, probability: 0.1}
         ]
     }
 
@@ -27,6 +58,7 @@ $(function() {
     var nodes = svg.selectAll('circle')
             .data(data.nodes)
         .enter().append('circle')
+            .attr('id', function(d, i) { return 'node_' + i })
             .attr('class', 'node')
             .attr('r', 15)
             .attr('cx', function(d) { return d.x; })
@@ -86,4 +118,19 @@ $(function() {
         // Redraw edges after dragging a node
         drawEdges();
     }
+
+    function simulate() {
+        markov = new MarkovChain(
+            [[0.5, 0.5],
+             [0.9, 0.1]]
+        );
+
+        window.setInterval(function() {
+            $('#node_' + markov.state).removeClass('current-node');
+            markov.transition();
+            $('#node_' + markov.state).addClass('current-node');
+        }, 1000);
+    }
+
+    simulate();
 });

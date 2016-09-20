@@ -16,7 +16,11 @@ body {
 }
 
 .node {
-    stroke: #fff;
-    stroke-width: 1.5px;
+    stroke: #2980b9;
+    stroke-width: 2.5px;
     fill: #2980b9;
+}
+
+.current-node {
+    stroke: #1abc9c;
 }
